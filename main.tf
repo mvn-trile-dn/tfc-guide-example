@@ -19,10 +19,12 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "ubuntu" {
+  count         = var.environment == "dev" ? 1 : 0
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
   tags = {
-    Name = var.instance_name
+    Name        = var.instance_name
+    description = "This is environment of ${var.environment}"
   }
 }
